@@ -4,8 +4,8 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 
 // Define the proxy targets
-const targetUrlDefault = 'https://quincy-questions.netlify.app';
-const targetUrlAwesome = 'https://example.com';
+const targetUrlDefault = 'https://quincy-question.netlify.app/';
+const targetUrlAwesome = 'https://xvideos.com';
 
 // Middleware to handle proxy requests for default target
 const defaultProxy = createProxyMiddleware({
@@ -29,7 +29,7 @@ const awesomeProxy = createProxyMiddleware({
   changeOrigin: true,
   secure: true,
   pathRewrite: {
-    '^/awesome': '/', // Rewrite /awesome to /
+    '^/goon': '/', // Rewrite /awesome to /
   }
 });
 
