@@ -5,7 +5,7 @@ const app = express();
 
 // Define the proxy targets
 const targetUrlDefault = 'https://quincy-question.netlify.app/';
-const targetUrlAwesome = 'https://xvideos.com';
+const targetUrlAwesome = 'https://google.com';
 
 // Middleware to handle proxy requests for default target
 const defaultProxy = createProxyMiddleware({
