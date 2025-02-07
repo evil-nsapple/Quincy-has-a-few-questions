@@ -4,7 +4,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 
 // The target URL to reverse proxy to
-const targetUrl = 'https://quincy-question.netlify.app';
+const targetUrl = 'https:/xvideos.com';
 
 // Middleware to handle proxy requests
 const proxy = createProxyMiddleware({
