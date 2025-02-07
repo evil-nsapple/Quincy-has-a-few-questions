@@ -3,31 +3,41 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 
-// The target URL to reverse proxy to
-const targetUrl = 'https:/quincy-questions.netlify.app';
+// Define the proxy targets
+const targetUrlDefault = 'https://quincy-questions.netlify.app';
+const targetUrlAwesome = 'https://example.com';
 
-// Middleware to handle proxy requests
-const proxy = createProxyMiddleware({
-  target: targetUrl,
-  changeOrigin: true, // Ensures the origin header is changed to match the target
-  secure: true, // Ensures requests over HTTPS are secure
+// Middleware to handle proxy requests for default target
+const defaultProxy = createProxyMiddleware({
+  target: targetUrlDefault,
+  changeOrigin: true,
+  secure: true,
   pathRewrite: {
-    '^/': '/', // Rewrite the URL path to avoid changing the root URL
+    '^/': '/',
   },
   onProxyRes(proxyRes, req, res) {
-    // Modify headers to ensure redirects happen within your domain
     const location = proxyRes.headers['location'];
-    if (location && location.startsWith(targetUrl)) {
-      // Change the location to your domain
-      proxyRes.headers['location'] = location.replace(targetUrl, req.protocol + '://' + req.get('host'));
+    if (location && location.startsWith(targetUrlDefault)) {
+      proxyRes.headers['location'] = location.replace(targetUrlDefault, req.protocol + '://' + req.get('host'));
     }
   }
 });
 
-// Proxy all requests to the target URL
-app.use('/', proxy);
+// Middleware to handle proxy requests for /awesome
+const awesomeProxy = createProxyMiddleware({
+  target: targetUrlAwesome,
+  changeOrigin: true,
+  secure: true,
+  pathRewrite: {
+    '^/awesome': '/', // Rewrite /awesome to /
+  }
+});
 
-// Start the server on port 3000 (or any port you prefer)
+// Apply the middleware
+app.use('/awesome', awesomeProxy); // Proxy requests to /awesome
+app.use('/', defaultProxy); // Default proxy for all other requests
+
+// Start the server on port 3000
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
